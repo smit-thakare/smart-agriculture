@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Agriculture Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f8e9;
+            color: #333;
+        }
+
+        nav {
+            background: #2e7d32;
+            color: white;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav h2 {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #166534;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        /* STATISTICS */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.10);
+        }
+
+        .stat-icon {
+            font-size: 35px;
+        }
+
+        .stat-card h2 {
+            color: #2e7d32;
+            font-size: 28px;
+            margin: 10px 0;
+        }
+
+        .stat-card p {
+            margin: 0;
+            color: #666;
+        }
+
+        /* FEATURE CARDS */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.10);
+        }
+
+        .dashboard-card .icon {
+            font-size: 40px;
+        }
+
+        .dashboard-card h2 {
+            color: #166534;
+            font-size: 20px;
+        }
+
+        .dashboard-card p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .dashboard-card a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 18px;
+            background: #2e7d32;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .dashboard-card a:hover {
+            background: #1b5e20;
+        }
+
+        /* HISTORY */
+
+        .history-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.10);
+        }
+
+        .history-section h2 {
+            color: #166534;
+            margin-top: 0;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th {
+            background: #2e7d32;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 900px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 5px;
+                display: inline-block;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+
+<nav>
+
+    <h2>🌱 Smart Agriculture</h2>
+
+    <div>
+
+        <a href="/">Home</a>
+
+        <a href="/disease">
+            Disease Detection
+        </a>
+
+        <a href="/yield">
+            Yield Prediction
+        </a>
+
+        <a href="/weather">
+            Weather
+        </a>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            🌾 Smart Agriculture Dashboard
+        </h1>
+
+        <p>
+            AI-powered agriculture monitoring and prediction system
+        </p>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🌿
+            </div>
+
+            <h2>
+                {{ disease_history|length }}
+            </h2>
+
+            <p>
+                Disease Predictions
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🌾
+            </div>
+
+            <h2>
+                {{ yield_history|length }}
+            </h2>
+
+            <p>
+                Yield Predictions
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🤖
+            </div>
+
+            <h2>
+                AI
+            </h2>
+
+            <p>
+                Machine Learning
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🌱
+            </div>
+
+            <h2>
+                21
+            </h2>
+
+            <p>
+                Crop Types
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- FEATURES -->
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+
+            <div class="icon">
+                🌿
+            </div>
+
+            <h2>
+                Disease Detection
+            </h2>
+
+            <p>
+                Detect possible crop diseases
+                using AI image classification.
+            </p>
+
+            <a href="/disease">
+                Open Detection
+            </a>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="icon">
+                🌾
+            </div>
+
+            <h2>
+                Yield Prediction
+            </h2>
+
+            <p>
+                Predict crop yield using
+                agricultural and environmental data.
+            </p>
+
+            <a href="/yield">
+                Predict Yield
+            </a>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="icon">
+                🌦️
+            </div>
+
+            <h2>
+                Weather Data
+            </h2>
+
+            <p>
+                Monitor temperature,
+                humidity and rainfall.
+            </p>
+
+            <a href="/weather">
+                View Weather
+            </a>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="icon">
+                🤖
+            </div>
+
+            <h2>
+                AI Models
+            </h2>
+
+            <p>
+                Machine learning models power
+                disease and yield prediction.
+            </p>
+
+            <a href="/disease">
+                Explore AI
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- DISEASE HISTORY -->
+
+    <div class="history-section">
+
+        <h2>
+            🌿 Disease Prediction History
+        </h2>
+
+        {% if disease_history %}
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Disease</th>
+                        <th>Confidence</th>
+                        <th>Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for row in disease_history %}
+
+                    <tr>
+
+                        <td>
+                            {{ row["id"] }}
+                        </td>
+
+                        <td>
+                            {{ row["image"] }}
+                        </td>
+
+                        <td>
+                            {{ row["disease"] }}
+                        </td>
+
+                        <td>
+                            {{ "%.2f"|format(row["confidence"]) }}%
+                        </td>
+
+                        <td>
+                            {{ row["date"] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-message">
+            🌱 No disease predictions yet.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- YIELD HISTORY -->
+
+    <div class="history-section">
+
+        <h2>
+            🌾 Yield Prediction History
+        </h2>
+
+        {% if yield_history %}
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Crop</th>
+                        <th>Area</th>
+                        <th>Rainfall</th>
+                        <th>Temperature</th>
+                        <th>Humidity</th>
+                        <th>Soil pH</th>
+                        <th>Fertilizer</th>
+                        <th>Predicted Yield</th>
+                        <th>Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for row in yield_history %}
+
+                    <tr>
+
+                        <td>
+                            {{ row["id"] }}
+                        </td>
+
+                        <td>
+                            {{ row["crop"] }}
+                        </td>
+
+                        <td>
+                            {{ row["area"] }}
+                        </td>
+
+                        <td>
+                            {{ row["rainfall"] }}
+                        </td>
+
+                        <td>
+                            {{ row["temperature"] }}
+                        </td>
+
+                        <td>
+                            {{ row["humidity"] }}
+                        </td>
+
+                        <td>
+                            {{ row["soil_ph"] }}
+                        </td>
+
+                        <td>
+                            {{ row["fertilizer"] }}
+                        </td>
+
+                        <td>
+                            <strong>
+                                {{ "%.2f"|format(row["predicted_yield"]) }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ row["date"] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-message">
+            🌾 No yield predictions yet.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

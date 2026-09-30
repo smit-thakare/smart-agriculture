@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+
+database/agriculture.db
+
+static/uploads/*
+
+.env
+
+dataset/disease_dataset/
+plantvillage_data/images/
+plantvillage_data/train-00000-of-00001.parquet
+
+model/disease_model.keras

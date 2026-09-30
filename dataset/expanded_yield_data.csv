@@ -1,0 +1,78 @@
+import pandas as pd
+import numpy as np
+from pathlib import Path
+
+rng = np.random.default_rng(42)
+
+# Demo/synthetic training ranges for the capstone.
+specs = {
+    "Rice":        (3.5, 1000, 28, 72, 6.5, 190),
+    "Wheat":       (3.5, 650,  22, 60, 6.9, 165),
+    "Maize":       (4.0, 850,  28, 69, 6.5, 175),
+    "Cotton":      (2.8, 820,  30, 66, 6.7, 210),
+    "Soybean":     (3.2, 750,  27, 69, 6.5, 165),
+    "Potato":      (4.0, 650,  20, 72, 6.1, 210),
+    "Tomato":      (4.2, 620,  25, 68, 6.3, 175),
+    "Orange":      (9.0, 950,  25, 67, 6.3, 215),
+    "Banana":     (21.0,1250,  28, 80, 6.3, 245),
+    "Mango":       (8.0, 880,  29, 62, 6.6, 210),
+    "Grapes":      (7.0, 650,  26, 58, 6.6, 180),
+    "Watermelon": (11.0, 600,  28, 68, 6.2, 195),
+    "Onion":       (6.5, 650,  25, 62, 6.6, 180),
+    "Groundnut":   (2.8, 700,  28, 63, 6.3, 145),
+    "Chickpea":    (2.6, 500,  22, 58, 6.9, 125),
+    "Pigeon Pea":  (2.5, 700,  27, 65, 6.5, 135),
+    "Sugarcane":  (80.0,1150,  28, 78, 6.6, 250),
+    "Sunflower":   (2.3, 620,  27, 59, 6.6, 130),
+    "Mustard":     (2.3, 520,  21, 59, 6.6, 125),
+    "Sorghum":     (3.0, 620,  29, 58, 6.5, 125),
+    "Pearl Millet":(2.6, 580,  30, 54, 6.5, 115),
+}
+
+rows = []
+
+for crop, (yield_base, rain_base, temp_base, hum_base, ph_base, fert_base) in specs.items():
+    for _ in range(12):
+        area = round(float(rng.uniform(1.5, 5.0)), 1)
+        rainfall = round(float(rng.normal(rain_base, rain_base * 0.10)), 1)
+        temperature = round(float(rng.normal(temp_base, 1.5)), 1)
+        humidity = round(float(rng.normal(hum_base, 4)), 1)
+        soil_ph = round(float(rng.normal(ph_base, 0.18)), 1)
+        fertilizer = round(float(rng.normal(fert_base, fert_base * 0.10)), 1)
+
+        # Synthetic relationship used only to make a consistent demo dataset.
+        rain_factor = 1 - abs(rainfall - rain_base) / (rain_base * 2.5)
+        temp_factor = 1 - abs(temperature - temp_base) / 15
+        hum_factor = 1 - abs(humidity - hum_base) / 80
+        ph_factor = 1 - abs(soil_ph - ph_base) / 2
+        fert_factor = 1 - abs(fertilizer - fert_base) / (fert_base * 3)
+
+        factor = np.clip(
+            0.55 + 0.12*rain_factor + 0.10*temp_factor +
+            0.08*hum_factor + 0.08*ph_factor + 0.07*fert_factor,
+            0.60, 1.00
+        )
+
+        predicted_yield = max(
+            0.5,
+            yield_base * factor * (0.75 + 0.12 * area) +
+            rng.normal(0, yield_base * 0.04)
+        )
+
+        rows.append([
+            crop, area, rainfall, temperature, humidity,
+            soil_ph, fertilizer, round(float(predicted_yield), 2)
+        ])
+
+df = pd.DataFrame(rows, columns=[
+    "Crop", "Area", "Rainfall", "Temperature",
+    "Humidity", "Soil_pH", "Fertilizer", "Yield"
+])
+
+path = Path("/mnt/data/expanded_yield_data.csv")
+df.to_csv(path, index=False)
+
+print(f"Created: {len(df)} records")
+print(f"Crops: {df['Crop'].nunique()}")
+print(df["Crop"].value_counts().sort_index().to_string())
+print(f"File: {path}")

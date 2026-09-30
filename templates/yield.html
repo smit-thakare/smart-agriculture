@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crop Yield Prediction</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🌾 Crop Yield Prediction</h1>
+
+    <p>
+        Enter agricultural and environmental information
+        to predict crop yield using AI.
+    </p>
+
+    <form method="POST">
+
+        <label>🌱 Select Crop</label>
+
+        <select name="crop" required>
+            <option value="">Select Crop</option>
+            <option>Rice</option>
+            <option>Wheat</option>
+            <option>Maize</option>
+            <option>Cotton</option>
+            <option>Soybean</option>
+            <option>Potato</option>
+            <option>Tomato</option>
+            <option>Orange</option>
+            <option>Banana</option>
+            <option>Mango</option>
+            <option>Grapes</option>
+            <option>Watermelon</option>
+            <option>Onion</option>
+            <option>Groundnut</option>
+            <option>Chickpea</option>
+            <option>Pigeon Pea</option>
+            <option>Sugarcane</option>
+            <option>Sunflower</option>
+            <option>Mustard</option>
+            <option>Sorghum</option>
+            <option>Pearl Millet</option>
+        </select>
+
+        <label>📐 Area (Hectare)</label>
+
+        <input
+            type="number"
+            name="area"
+            step="any"
+            placeholder="Enter area"
+            required
+        >
+
+        <h3>🌦️ Weather Data</h3>
+
+        <button type="button" onclick="getWeather()">
+            🌦️ Get Current Weather
+        </button>
+
+        <p id="weather-status"></p>
+
+        <label>🌧️ Rainfall (mm)</label>
+
+        <input
+            type="number"
+            id="rainfall"
+            name="rainfall"
+            step="any"
+            placeholder="Weather will fill this"
+            required
+        >
+
+        <label>🌡️ Temperature (°C)</label>
+
+        <input
+            type="number"
+            id="temperature"
+            name="temperature"
+            step="any"
+            placeholder="Weather will fill this"
+            required
+        >
+
+        <label>💧 Humidity (%)</label>
+
+        <input
+            type="number"
+            id="humidity"
+            name="humidity"
+            step="any"
+            placeholder="Weather will fill this"
+            required
+        >
+
+        <label>🌱 Soil pH</label>
+
+        <input
+            type="number"
+            name="soil_ph"
+            step="any"
+            placeholder="Enter soil pH"
+            required
+        >
+
+        <label>🧪 Fertilizer (kg)</label>
+
+        <input
+            type="number"
+            name="fertilizer"
+            step="any"
+            placeholder="Enter fertilizer amount"
+            required
+        >
+
+        <button type="submit">
+            🌾 Predict Yield
+        </button>
+
+    </form>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>

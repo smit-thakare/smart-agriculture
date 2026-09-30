@@ -1,0 +1,46 @@
+import pandas as pd
+from pathlib import Path
+from PIL import Image
+import io
+
+PARQUET_FILE = Path("plantvillage_data/train-00000-of-00001.parquet")
+OUTPUT_DIR = Path("plantvillage_data/images")
+
+print("Loading dataset...")
+
+df = pd.read_parquet(PARQUET_FILE)
+
+print("Total images:", len(df))
+print("Total classes:", df["class_label"].nunique())
+
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+for index, row in df.iterrows():
+
+    class_name = row["class_label"]
+
+    class_dir = OUTPUT_DIR / class_name
+    class_dir.mkdir(parents=True, exist_ok=True)
+
+    image_data = row["image"]
+
+    if isinstance(image_data, dict):
+        image_bytes = image_data["bytes"]
+    else:
+        image_bytes = image_data
+
+    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+
+    image_path = class_dir / f"{index}.jpg"
+    image.save(image_path)
+
+    if (index + 1) % 100 == 0:
+        print(f"Converted {index + 1}/{len(df)} images")
+
+print()
+print("================================")
+print("DATASET CONVERSION COMPLETE")
+print("================================")
+print("Images:", len(df))
+print("Classes:", df["class_label"].nunique())
+print("Saved in:", OUTPUT_DIR)

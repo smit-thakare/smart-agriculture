@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crop Disease Detection</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <h2>🌱 Smart Agriculture</h2>
+
+    <div>
+        <a href="/">Home</a>
+        <a href="/disease">Disease Detection</a>
+        <a href="/yield">Yield Prediction</a>
+        <a href="/dashboard">Dashboard</a>
+    </div>
+</nav>
+
+
+<div class="container">
+
+    <h1>🌿 Crop Disease Detection</h1>
+
+    <p>
+        Upload a crop leaf image and let the AI model detect
+        possible crop diseases.
+    </p>
+
+
+    <form method="POST"
+          enctype="multipart/form-data"
+          class="upload-form">
+
+        <label for="image">
+            📷 Select Crop Leaf Image
+        </label>
+
+        <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*"
+            required
+            onchange="previewImage(event)"
+        >
+
+        <div id="preview-container">
+
+            <img
+                id="image-preview"
+                src=""
+                alt="Image Preview"
+            >
+
+        </div>
+
+        <button type="submit">
+            🔍 Detect Disease
+        </button>
+
+    </form>
+
+
+    {% if disease %}
+
+    <div class="result">
+
+        <h2>🌱 Detection Result</h2>
+
+        <p>
+            Disease:
+            <strong>{{ disease }}</strong>
+        </p>
+
+        <p>
+            Confidence:
+            <strong>{{ "%.2f"|format(confidence) }}%</strong>
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<script>
+
+function previewImage(event) {
+
+    const image = document.getElementById("image-preview");
+
+    const file = event.target.files[0];
+
+    if (file) {
+
+        image.src = URL.createObjectURL(file);
+
+        document.getElementById("preview-container")
+            .style.display = "block";
+    }
+}
+
+</script>
+
+</body>
+</html>

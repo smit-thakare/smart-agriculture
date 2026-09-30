@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Weather Data - Smart Agriculture</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: #f4faef;
+        color: #14532d;
+      }
+
+      nav {
+        background: #2e7d32;
+        padding: 18px 7%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+      }
+
+      nav h2 {
+        font-size: 24px;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        font-weight: bold;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 20px;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 38px;
+        margin-bottom: 10px;
+      }
+
+      .subtitle {
+        color: #555;
+        margin-bottom: 35px;
+      }
+
+      .weather-card {
+        background: white;
+        border-radius: 18px;
+        padding: 35px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .weather-card h2 {
+        margin-bottom: 25px;
+      }
+
+      .weather-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      .weather-box {
+        padding: 25px 15px;
+        border-radius: 15px;
+        background: #f1f8e9;
+      }
+
+      .weather-icon {
+        font-size: 42px;
+        margin-bottom: 10px;
+      }
+
+      .weather-value {
+        font-size: 28px;
+        font-weight: bold;
+        color: #166534;
+      }
+
+      .weather-label {
+        margin-top: 8px;
+        color: #555;
+      }
+
+      .location {
+        margin-top: 20px;
+        color: #666;
+      }
+
+      .error {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+
+      .back-btn {
+        display: inline-block;
+        background: #2e7d32;
+        color: white;
+        padding: 13px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-top: 20px;
+      }
+
+      @media (max-width: 800px) {
+        .weather-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        nav {
+          flex-direction: column;
+          gap: 15px;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .weather-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav>
+      <h2>🌱 Smart Agriculture</h2>
+
+      <div>
+        <a href="/">Home</a>
+        <a href="/disease">Disease</a>
+        <a href="/yield">Yield</a>
+        <a href="/dashboard">Dashboard</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1>🌦️ Weather Data</h1>
+
+      <p class="subtitle">Current weather information for agriculture</p>
+
+      {% if weather %}
+
+      <div class="weather-card">
+        <h2>🌍 Current Weather</h2>
+
+        <div class="weather-grid">
+          <div class="weather-box">
+            <div class="weather-icon">🌡️</div>
+
+            <div class="weather-value">{{ weather.temperature }} °C</div>
+
+            <div class="weather-label">Temperature</div>
+          </div>
+
+          <div class="weather-box">
+            <div class="weather-icon">💧</div>
+
+            <div class="weather-value">{{ weather.humidity }} %</div>
+
+            <div class="weather-label">Humidity</div>
+          </div>
+
+          <div class="weather-box">
+            <div class="weather-icon">🌧️</div>
+
+            <div class="weather-value">{{ weather.rainfall }} mm</div>
+
+            <div class="weather-label">Rain</div>
+          </div>
+
+          <div class="weather-box">
+            <div class="weather-icon">☔</div>
+
+            <div class="weather-value">{{ weather.precipitation }} mm</div>
+
+            <div class="weather-label">Precipitation</div>
+          </div>
+        </div>
+
+        <p class="location">📍 Weather data obtained from Open-Meteo</p>
+      </div>
+
+      {% else %}
+
+      <div class="weather-card">
+        <h2>Weather data unavailable</h2>
+
+        <p>Please check your internet connection or weather API settings.</p>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+      </div>
+
+      {% endif %}
+
+      <a href="/dashboard" class="back-btn"> ← Back to Dashboard </a>
+    </div>
+  </body>
+</html>
